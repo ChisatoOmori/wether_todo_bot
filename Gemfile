@@ -57,3 +57,11 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 group :production do
   gem 'pg'
 end
+
+# gem 'google-api-client'
+
+#LINE API用
+gem 'line-bot-api'
+
+#access tokenなどを管理する用
+gem 'dotenv-rails'
