@@ -6,8 +6,8 @@ class LinebotController < ApplicationController
   
     def client
       @client ||= Line::Bot::Client.new { |config|
-        config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
-        config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
+        config.channel_secret = "067b34857437dea749da9e84cb3fb35b"
+        config.channel_token = "OI/bY7BVoXNM5oGzIAjv3ZwrGigx0Vhg0BvpYKJl5nYHj77nHrUsjeKYaOW2zVZ5vsGon82dM0UMsDqF3PJ+lH2LeZyq/Hdo3ZmbZspSlfXwgTN/SMqPu2vq3map57KqwWC8OAJouN+mZpfjhbwt7wdB04t89/1O/w1cDnyilFU="
       }
     end
   
