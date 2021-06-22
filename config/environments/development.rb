@@ -75,6 +75,6 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
   # config.hosts << "da0824f6bd33.ngrok.io"
-  config.hosts << "glacial-woodland-63543.herokuapp.com/"
+  config.hosts << "glacial-woodland-63543.herokuapp.com"
 
 end
