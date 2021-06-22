@@ -54,9 +54,11 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 #heroku用に追加
-group :production do
-  gem 'pg'
-end
+# group :production do
+#   gem 'pg'
+# end
+gem 'sqlite3', group: :development
+gem 'pg', group: :production
 
 # gem 'google-api-client'
 
