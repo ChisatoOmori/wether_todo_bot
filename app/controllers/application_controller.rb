@@ -32,8 +32,8 @@ when Line::Bot::Event::Message
   case event.type
   when Line::Bot::Event::MessageType::Location
 　　　　　　# LINEの位置情報から緯度経度を取得
-    latitude = "35.367044"
-    longitude = "132.754694"
+    latitude = event.message['latitude']
+    longitude = event.message['longitude']
     appId = "606b81c6d6c2c6da34af41ee78d06951"
     url= "http://api.openweathermap.org/data/2.5/forecast?lon=#{longitude}&lat=#{latitude}&APPID=#{appId}&units=metric&mode=xml"
    # XMLをパースしていく
