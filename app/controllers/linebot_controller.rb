@@ -8,9 +8,9 @@ class LinebotController < ApplicationController
       case event
       when Line::Bot::Event::Message
         case event.type
-        when Line::Bot::Event::MessageType::Text
-          latitude = '35.374760'# event.message['latitude']
-          longitude =  '132.741469'# event.message['longitude']
+        when Line::Bot::Event::MessageType::Location  #Text
+          latitude = event.message['latitude'] #'35.374760'
+          longitude = event.message['longitude'] #'132.741469'  
           appId = "606b81c6d6c2c6da34af41ee78d06951"
           url= "http://api.openweathermap.org/data/2.5/forecast?lon=#{longitude}&lat=#{latitude}&APPID=#{appId}&units=metric&mode=xml"
          # XMLをパースしていく
