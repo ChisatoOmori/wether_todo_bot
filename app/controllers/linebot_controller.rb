@@ -4,9 +4,9 @@ class LinebotController < ApplicationController
     require 'kconv'
     require 'rexml/document'
   
-    post '/callback' do
+    def callback
         body = request.body.read
-      
+
         signature = request.env['HTTP_X_LINE_SIGNATURE']
         unless client.validate_signature(body, signature)
           error 400 do 'Bad Request' end
@@ -29,11 +29,7 @@ class LinebotController < ApplicationController
               tf.write(response.body)
             end
           end
-        end
-      
-        # Don't forget to return a successful response
-        "OK"
-      end
+    end
   
     private
   
