@@ -1,5 +1,6 @@
 class LinebotController < ApplicationController
 
+
   def callback
     body = request.body.read
     events = client.parse_events_from(body)
