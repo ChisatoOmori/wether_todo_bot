@@ -1,40 +1,65 @@
 class LinebotController < ApplicationController
-    
-  require 'line/bot'
+  require 'line/bot'  # gem 'line-bot-api'
   require 'open-uri'
   require 'kconv'
   require 'rexml/document'
-  
-# 省略
-when Line::Bot::Event::Message
-    case event.type
-    when Line::Bot::Event::MessageType::Location
-　　　　　　# LINEの位置情報から緯度経度を取得
-      latitude = event.message['latitude']
-      longitude = event.message['longitude']
-      appId = "取得したAPI KEY"
-      url= "http://api.openweathermap.org/data/2.5/forecast?lon=#{longitude}&lat=#{latitude}&APPID=#{appId}&units=metric&mode=xml"
-     # XMLをパースしていく
-      xml  = open( url ).read.toutf8
-      doc = REXML::Document.new(xml)
-      xpath = 'weatherdata/forecast/time[1]/'
-      nowWearther = doc.elements[xpath + 'symbol'].attributes['name']
-      nowTemp = doc.elements[xpath + 'temperature'].attributes['value']
-      case nowWearther
-　　　　　# 条件が一致した場合、メッセージを返す処理。絵文字も入れています。
-      when /.*(clear sky|few clouds).*/
-        push = "現在地の天気は晴れです\u{2600}\n\n現在の気温は#{nowTemp}℃です\u{1F321}"
-      when /.*(scattered clouds|broken clouds|overcast clouds).*/
-        push = "現在地の天気は曇りです\u{2601}\n\n現在の気温は#{nowTemp}℃です\u{1F321}"
-      when /.*(rain|thunderstorm|drizzle).*/
-        push = "現在地の天気は雨です\u{2614}\n\n現在の気温は#{nowTemp}℃です\u{1F321}"
-      when /.*(snow).*/
-        push = "現在地の天気は雪です\u{2744}\n\n現在の気温は#{nowTemp}℃です\u{1F321}"
-      when /.*(fog|mist|Haze).*/
-        push = "現在地では霧が発生しています\u{1F32B}\n\n現在の気温は#{nowTemp}℃です\u{1F321}"
-      else
-        push = "現在地では何かが発生していますが、\nご自身でお確かめください。\u{1F605}\n\n現在の気温は#{nowTemp}℃です\u{1F321}"
+
+  def callback
+    body = request.body.read
+    signature = request.env['HTTP_X_LINE_SIGNATURE']
+    unless client.validate_signature(body, signature)
+      return head :bad_request
+    end
+    events = client.parse_events_from(body)
+    events.each { |event|
+      case event
+        # メッセージが送信された場合の対応を入力
+
+        # ユーザーからテキスト形式のメッセージが送られて来た場合の対応を入力
+
+          when /.*(明日|あした).*/
+            # info[2]：明日の天気
+            per06to12 = doc.elements[xpath + 'info[2]/rainfallchance/period[2]'].text
+            per12to18 = doc.elements[xpath + 'info[2]/rainfallchance/period[3]'].text
+            per18to24 = doc.elements[xpath + 'info[2]/rainfallchance/period[4]'].text
+            if per06to12.to_i >= min_per || per12to18.to_i >= min_per || per18to24.to_i >= min_per
+              push =
+                "テキスト\nテキスト\n降水確率\n　  6〜12時　#{per06to12}％\n　12〜18時　 #{per12to18}％\n　18〜24時　#{per18to24}％\nテキスト"
+            else
+              push =
+                "テキスト"            end
+          # テキスト以外（画像等）のメッセージが送られた場合
+        else
+          push = "テキスト"
+        end
+        message = {
+          type: 'text',
+          text: push
+        }
+        client.reply_message(event['replyToken'], message)
+        # LINEお友達追された場合
+      when Line::Bot::Event::Follow
+        # 登録したユーザーのidをユーザーテーブルに格納
+        line_id = event['source']['userId']
+        User.create(line_id: line_id)
+        # LINEお友達解除された場合
+      when Line::Bot::Event::Unfollow
+        # お友達解除したユーザーのデータをユーザーテーブルから削除
+        line_id = event['source']['userId']
+        User.find_by(line_id: line_id).destroy
       end
-  }
-# 省略
+    }
+    head :ok
+  end
+
+  private
+
+  def client
+    @client ||= Line::Bot::Client.new { |config|
+      config.channel_secret = ENV["914ccff89a9d4bfcbe63085037d268c3"]
+      config.channel_token = ENV["B89EzCaCXn2cZliuHiC31GNyywxH4GBiwepuVn+AvXbovMFplf7gY96FpaOXCkUqPKYSK+4SbGvgH/xoUnKylG9Hp+HIHI4ZjT8ICnbaZ0m1IIz675m3xbI8pG9N0iDXo/QqsXLH4zhiCvu7jrJLwwdB04t89/1O/w1cDnyilFU="]
+    }
+  end
 end
+
+
