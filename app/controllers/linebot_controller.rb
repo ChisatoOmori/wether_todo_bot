@@ -14,11 +14,11 @@ class LinebotController < ApplicationController
           appId = "606b81c6d6c2c6da34af41ee78d06951"
           url= "http://api.openweathermap.org/data/2.5/forecast?lon=#{longitude}&lat=#{latitude}&APPID=#{appId}&units=metric&mode=xml"
          # XMLをパースしていく
-          # xml  = open( url ).read.toutf8
-          # doc = REXML::Document.new(xml)
-          # xpath = 'weatherdata/forecast/time[1]/'
-          # nowWearther = doc.elements[xpath + 'symbol'].attributes['name']
-          # nowTemp = doc.elements[xpath + 'temperature'].attributes['value']
+          xml  = open( url ).read.toutf8
+          doc = REXML::Document.new(xml)
+          xpath = 'weatherdata/forecast/time[1]/'
+          nowWearther = doc.elements[xpath + 'symbol'].attributes['name']
+          nowTemp = doc.elements[xpath + 'temperature'].attributes['value']
       #     case nowWearther
       # 　　　　　# 条件が一致した場合、メッセージを返す処理。絵文字も入れています。
       #     when /.*(clear sky|few clouds).*/
