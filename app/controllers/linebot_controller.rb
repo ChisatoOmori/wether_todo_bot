@@ -38,7 +38,7 @@ class LinebotController < ApplicationController
       
           message = {
             type: 'text',
-            text: "push" #event.message['text']
+            text: nowWearther #event.message['text']
           }
           client.reply_message(event['replyToken'], message)
         when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
