@@ -1,7 +1,7 @@
 require 'line/bot'
-# require 'open-uri'
-# require 'kconv'
-# require 'rexml/document'
+require 'open-uri'
+require 'kconv'
+require 'rexml/document'
 
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
