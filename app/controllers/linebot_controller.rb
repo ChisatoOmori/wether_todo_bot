@@ -17,7 +17,7 @@ class LinebotController < ApplicationController
           xml  = open( url ).read.toutf8
           doc = REXML::Document.new(xml)
           xpath = 'weatherdata/forecast/time[1]/'
-          nowWearther = doc.elements[xpath + 'symbol'].attributes['name']
+          nowWearther = (doc.elements[xpath + 'symbol'].attributes['name']).to_s
           nowTemp = doc.elements[xpath + 'temperature'].attributes['value']
           # case nowWearther
       # 条件が一致した場合、メッセージを返す処理。絵文字も入れています。
