@@ -53,9 +53,16 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-gem 'dotenv-rails'
-gem 'line-bot-api'
-
+#heroku用に追加
 group :production do
   gem 'pg'
 end
+
+# gem 'google-api-client'
+
+#LINE API用
+gem 'line-bot-api'
+
+#access tokenなどを管理する用
+gem 'dotenv-rails'
+
