@@ -5,8 +5,8 @@ task :update_feed => :environment do
     require 'rexml/document'
   #line-bot側の設定
     client ||= Line::Bot::Client.new { |config|
-      config.channel_secret = ENV["914ccff89a9d4bfcbe63085037d268c3"]
-      config.channel_token = ENV["B89EzCaCXn2cZliuHiC31GNyywxH4GBiwepuVn+AvXbovMFplf7gY96FpaOXCkUqPKYSK+4SbGvgH/xoUnKylG9Hp+HIHI4ZjT8ICnbaZ0m1IIz675m3xbI8pG9N0iDXo/QqsXLH4zhiCvu7jrJLwwdB04t89/1O/w1cDnyilFU="]
+      config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
+      config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
     }
     # 使用したいxmlデータURLを入力
     # xmlデータをパース
@@ -29,7 +29,7 @@ task :update_feed => :environment do
       end
       # 発信するメッセージの設定
       push =
-        "#{word1}\n#{word3}\n降水確率\n   6〜12時 #{per06to12}％\n 12〜18時  #{per12to18}％\n 18〜24時 #{per18to24}％\n#{word2}"
+        "#{word1}\n#{word3}\n降水確率\n　  6〜12時　#{per06to12}％\n　12〜18時　 #{per12to18}％\n　18〜24時　#{per18to24}％\n#{word2}"
       # メッセージの発信先idを配列で渡す必要があるため、userテーブルよりpluck関数を使ってidを配列で取得。
   #multicastsメソッドは、今回利用しているgem「line-bot-api」で定義されており、このメソッドを呼び出している
       user_ids = User.all.pluck(:line_id)

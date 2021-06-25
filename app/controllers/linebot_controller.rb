@@ -1,42 +1,63 @@
 class LinebotController < ApplicationController
-    require 'line/bot'  # gem 'line-bot-api'
-    require 'open-uri'
-    require 'kconv'
-    require 'rexml/document'
-  
-    def callback
-      body = request.body.read
-      signature = request.env['HTTP_X_LINE_SIGNATURE']
-      unless client.validate_signature(body, signature)
-        return head :bad_request
-      end
-      events = client.parse_events_from(body)
-      events.each { |event|
-        case event
-            when Line::Bot::Event::Message
-              case event.type
-              when Line::Bot::Event::MessageType::Text
-                message = {
-                  type: 'text',
-                  text: event.message['text']
-                }
-                client.reply_message(event['replyToken'], message)
-            end
+
+
+  def callback
+    body = request.body.read
+    events = client.parse_events_from(body)
+
+    events.each { |event|
+      case event
+      when Line::Bot::Event::Message
+        case event.type
+        when Line::Bot::Event::MessageType::Text#Location  
+          latitude = '35.374760'#event.message['latitude'] 
+          longitude = '132.741469'#event.message['longitude']   
+          appId = "606b81c6d6c2c6da34af41ee78d06951"
+          url= "http://api.openweathermap.org/data/2.5/forecast?lon=#{longitude}&lat=#{latitude}&APPID=#{appId}&units=metric&mode=xml"
+         # XMLをパースしていく
+          xml  = open( url ).read.toutf8
+          doc = REXML::Document.new(xml)
+          xpath = 'weatherdata/forecast/time[1]/'
+          nowWearther = (doc.elements[xpath + 'symbol'].attributes['name']).to_s
+          nowTemp = doc.elements[xpath + 'temperature'].attributes['value']
+          case nowWearther
+          # 条件が一致した場合、メッセージを返す処理。絵文字も入れています。
+          when "clear sky", "few clouds"
+            push = "現在地の天気は晴れです\u{2600}\n\n現在の気温は#{nowTemp}℃です\u{1F321}"
+          when "scattered clouds", "broken clouds", "overcast clouds"
+            push = "現在地の天気は曇りです\u{2601}\n\n現在の気温は#{nowTemp}℃です\u{1F321}"
+          when "rain", "thunderstorm", "drizzle"
+            push = "現在地の天気は雨です\u{2614}\n\n現在の気温は#{nowTemp}℃です\u{1F321}"
+          when "snow"
+            push = "現在地の天気は雪です\u{2744}\n\n現在の気温は#{nowTemp}℃です\u{1F321}"
+          when "fog", "mist", "Haze"
+            push = "現在地では霧が発生しています\u{1F32B}\n\n現在の気温は#{nowTemp}℃です\u{1F321}"
+          else
+            push = "現在地では何かが発生していますが、\nご自身でお確かめください。\u{1F605}\n\n現在の気温は#{nowTemp}℃です\u{1F321}"
+          end
+      
+      
+          message = {
+            type: 'text',
+            text: push #event.message['text']
+          }
+          client.reply_message(event['replyToken'], message)
+        when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
+          response = client.get_message_content(event.message['id'])
+          tf = Tempfile.open("content")
+          tf.write(response.body)
         end
-      }
-      head :ok
-    end
-  
-    
-    private
-  
-    def client
-      @client ||= Line::Bot::Client.new { |config|
-        config.channel_secret = ENV["914ccff89a9d4bfcbe63085037d268c3"]
-        config.channel_token = ENV["B89EzCaCXn2cZliuHiC31GNyywxH4GBiwepuVn+AvXbovMFplf7gY96FpaOXCkUqPKYSK+4SbGvgH/xoUnKylG9Hp+HIHI4ZjT8ICnbaZ0m1IIz675m3xbI8pG9N0iDXo/QqsXLH4zhiCvu7jrJLwwdB04t89/1O/w1cDnyilFU="]
-      }
-    end
+      end
+    }
+    "OK"
   end
-  
-  
-  
+
+# 省略
+# when Line::Bot::Event::Message
+#   case event.type
+#   when Line::Bot::Event::MessageType::Location
+# # LINEの位置情報から緯度経度を取得
+
+# 省略
+
+end
