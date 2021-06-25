@@ -20,7 +20,7 @@ class LinebotController < ApplicationController
           nowWearther = (doc.elements[xpath + 'symbol'].attributes['name']).to_s
           nowTemp = doc.elements[xpath + 'temperature'].attributes['value']
           case nowWearther
-      条件が一致した場合、メッセージを返す処理。絵文字も入れています。
+          # 条件が一致した場合、メッセージを返す処理。絵文字も入れています。
           when "clear sky", "few clouds"
             push = "現在地の天気は晴れです\u{2600}\n\n現在の気温は#{nowTemp}℃です\u{1F321}"
           when "scattered clouds", "broken clouds", "overcast clouds"
