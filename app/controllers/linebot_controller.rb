@@ -61,3 +61,4 @@ class LinebotController < ApplicationController
 # 省略
 
 end
+# 1
