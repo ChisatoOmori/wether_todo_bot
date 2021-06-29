@@ -18,7 +18,7 @@ class LinebotController < ApplicationController
           xml  = open( url ).read.toutf8
           doc = REXML::Document.new(xml)
           xpath = 'weatherdata/forecast/time[1]/'
-          nowWearther = (doc.elements[xpath + 'symbol'].attributes['name']).to_s
+          nowWearther = (doc.elements[xpath + 'symbol'].attributes['name'])
           nowTemp = doc.elements[xpath + 'temperature'].attributes['value']
           case nowWearther
           # 条件が一致した場合、メッセージを返す処理。絵文字も入れています。
@@ -39,7 +39,7 @@ class LinebotController < ApplicationController
       
           message = {
             type: 'text',
-            text: push #event.message['text']
+            text: push
           }
           client.reply_message(event['replyToken'], message)
         when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
@@ -51,13 +51,5 @@ class LinebotController < ApplicationController
     }
     "OK"
   end
-
-# 省略
-# when Line::Bot::Event::Message
-#   case event.type
-#   when Line::Bot::Event::MessageType::Location
-# # LINEの位置情報から緯度経度を取得
-
-# 省略
 
 end
