@@ -21,22 +21,22 @@ class LinebotController < ApplicationController
           nowWearther = (doc.elements[xpath + 'symbol'].attributes['name']).to_s
           nowWearther_id = (doc.elements[xpath + 'symbol'].attributes['number']).to_i
           nowTemp = doc.elements[xpath + 'temperature'].attributes['value']
-          nowHumi = doc.elements[xpath + 'Humidity'].attributes['value']
+          nowHumi = doc.elements[xpath + 'humidity'].attributes['value']
 
           case nowWearther_id
           # 条件が一致した場合、メッセージを返す処理。絵文字も入れています。
           when 800
-            push2 = "現在地の天気は晴れです\u{2600}\n\n現在の気温は#{nowTemp}℃です\u{1F321}\n\n現在の湿度は#{nowHumi}です"
+            push2 = "現在地の天気は晴れです\u{2600}\n\n現在の気温は#{nowTemp}℃です\u{1F321}\n\n現在の湿度は#{nowHumi}%です"
           when 801..804
-            push2 = "現在地の天気は曇りです\u{2601}\n\n現在の気温は#{nowTemp}℃です\u{1F321}\n\n現在の湿度は#{nowHumi}です"
+            push2 = "現在地の天気は曇りです\u{2601}\n\n現在の気温は#{nowTemp}℃です\u{1F321}\n\n現在の湿度は#{nowHumi}%です"
           when 500..599
-            push2 = "現在地の天気は雨です\u{2614}\n\n現在の気温は#{nowTemp}℃です\u{1F321}\n\n現在の湿度は#{nowHumi}です"
+            push2 = "現在地の天気は雨です\u{2614}\n\n現在の気温は#{nowTemp}℃です\u{1F321}\n\n現在の湿度は#{nowHumi}%です"
           when 600..699
-            push2 = "現在地の天気は雪です\u{2744}\n\n現在の気温は#{nowTemp}℃です\u{1F321}\n\n現在の湿度は#{nowHumi}です"
+            push2 = "現在地の天気は雪です\u{2744}\n\n現在の気温は#{nowTemp}℃です\u{1F321}\n\n現在の湿度は#{nowHumi}%です"
           when 300..399
-            push2 = "現在地では霧が発生しています\u{1F32B}\n\n現在の気温は#{nowTemp}℃です\u{1F321}\n\n現在の湿度は#{nowHumi}です"
+            push2 = "現在地では霧が発生しています\u{1F32B}\n\n現在の気温は#{nowTemp}℃です\u{1F321}\n\n現在の湿度は#{nowHumi}%です"
           else
-            push2 = "現在地では何かが発生していますが、\nご自身でお確かめください。\u{1F605}\n\n現在の気温は#{nowTemp}℃です\u{1F321}\n\n現在の湿度は#{nowHumi}です"
+            push2 = "現在地では何かが発生していますが、\nご自身でお確かめください。\u{1F605}\n\n現在の気温は#{nowTemp}℃です\u{1F321}\n\n現在の湿度は#{nowHumi}%です"
           end
           p nowWearther
           p nowTemp
