@@ -54,6 +54,7 @@ class LinebotController < ApplicationController
             end
           p nowWearther
           p nowTemp
+          p nowWearther_id
       
           message = {
             type: 'text',
