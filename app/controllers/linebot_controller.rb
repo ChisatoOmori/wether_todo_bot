@@ -50,13 +50,13 @@ class LinebotController < ApplicationController
           client.reply_message(event['replyToken'], message)
         when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video, Line::Bot::Event::MessageType::Text
           message = {
-            type: 'text',
-            text: "位置情報を送信してください"
+            type: 'template'
           }
           client.reply_message(event['replyToken'], message)
         end
         when Line::Bot::Event::Follow
           line_id = event['source']['userId']
+          User.create(line_id: line_id)
         end
     }
     "OK"
