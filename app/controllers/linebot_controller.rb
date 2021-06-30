@@ -55,8 +55,9 @@ class LinebotController < ApplicationController
           }
           client.reply_message(event['replyToken'], message)
         end
-        
-      end
+        when Line::Bot::Event::Follow
+          line_id = event['source']['userId']
+        end
     }
     "OK"
   end
