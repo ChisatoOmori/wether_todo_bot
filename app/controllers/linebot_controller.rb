@@ -48,10 +48,12 @@ class LinebotController < ApplicationController
             text: push2
           }
           client.reply_message(event['replyToken'], message)
-        when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
-          response = client.get_message_content(event.message['id'])
-          tf = Tempfile.open("content")
-          tf.write(response.body)
+        when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video, Line::Bot::Event::MessageType::Text
+          message = {
+            type: 'text',
+            text: "位置情報を送信してください"
+          }
+          client.reply_message(event['replyToken'], message)
         end
       end
     }
