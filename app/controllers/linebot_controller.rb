@@ -49,7 +49,11 @@ class LinebotController < ApplicationController
           }
           client.reply_message(event['replyToken'], message)
         when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video, Line::Bot::Event::MessageType::Text
-          client.reply_message(event['replyToken'], "位置情報を送信してください")
+          message = {
+            type: 'text',
+            text: "位置情報を送信してください"
+          }
+          client.reply_message(event['replyToken'], message)
         end
       end
     }
