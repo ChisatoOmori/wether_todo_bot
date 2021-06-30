@@ -18,8 +18,8 @@ class ApplicationController < ActionController::Base
 
   def client
     @client ||= Line::Bot::Client.new { |config|
-      config.channel_secret = "914ccff89a9d4bfcbe63085037d268c3"
-      config.channel_token = "B89EzCaCXn2cZliuHiC31GNyywxH4GBiwepuVn+AvXbovMFplf7gY96FpaOXCkUqPKYSK+4SbGvgH/xoUnKylG9Hp+HIHI4ZjT8ICnbaZ0m1IIz675m3xbI8pG9N0iDXo/QqsXLH4zhiCvu7jrJLwwdB04t89/1O/w1cDnyilFU="
+      config.channel_secret = ENV["LINE_CHANNEL_SECLET"]
+      config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
       # ローカルで動かすだけならベタ打ちでもOK
       # config.channel_secret = "your channel secret"
       # config.channel_token = "your channel token"
