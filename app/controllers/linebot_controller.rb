@@ -55,7 +55,7 @@ class LinebotController < ApplicationController
             "altText": "位置検索中",
             "template": {
                 "type": "buttons",
-                "title": "現在の天気",
+                "title": "天気の子",
                 "text": "現在の位置を送信しますか？",
                 "actions": [
                     {
