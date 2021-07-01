@@ -2,6 +2,10 @@
 
 one:
   line_id: MyString
+  latitude: MyString
+  longitude: MyString
 
 two:
   line_id: MyString
+  latitude: MyString
+  longitude: MyString

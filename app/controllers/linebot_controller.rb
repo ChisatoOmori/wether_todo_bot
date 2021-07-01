@@ -49,14 +49,7 @@ class LinebotController < ApplicationController
           }
           client.reply_message(event['replyToken'], message)
         when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video, Line::Bot::Event::MessageType::Text
-          line = line_id.all
-          line.each do |line|
-            message = { 
-              "type": "text",
-              "text": "line"
-            }
-            client.reply_message(event['replyToken'], message)
-            end
+
           message = {
             "type": "template",
             "altText": "位置検索中",
