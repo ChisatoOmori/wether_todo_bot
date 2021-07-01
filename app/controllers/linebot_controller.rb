@@ -53,7 +53,7 @@ class LinebotController < ApplicationController
           line.each do |line|
             message = { 
               "type": "text",
-              "text": line
+              "text": "line"
             }
             client.reply_message(event['replyToken'], message)
             end
