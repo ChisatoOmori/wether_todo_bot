@@ -90,6 +90,7 @@ class LinebotController < ApplicationController
           User.find_by(line_id: line_id).destroy
 
         end
+        #デフォルトのメッセージ
       message = { type: 'text', text: "使い方:\n\n・位置情報を送信してください"}
       client.reply_message(event['replyToken'], message)
       end
