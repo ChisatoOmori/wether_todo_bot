@@ -49,13 +49,32 @@ class LinebotController < ApplicationController
           }
           client.reply_message(event['replyToken'], message)
         when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video, Line::Bot::Event::MessageType::Text
+
           message = {
-            type: 'text',
-            text: "位置情報を送信してください"
+            "type": "template",
+            "altText": "位置検索中",
+            "template": {
+                "type": "buttons",
+                "title": "天気情報",
+                "text": "現在の位置を送信しますか？",
+                "actions": [
+                    {
+                      "type": "uri",
+                      "label": "位置を送る",
+                      "uri": "line://nv/location"
+                    }
+                ]
+            }
           }
           client.reply_message(event['replyToken'], message)
         end
-      end
+        when Line::Bot::Event::Follow
+          line_id = event['source']['userId']
+          User.create(line_id: line_id)
+        when Line::Bot::Event::Unfollow
+          line_id = event['source']['userId']
+          User.find_by(line_id: line_id).destroy
+        end
     }
     "OK"
   end
