@@ -53,6 +53,7 @@ class LinebotController < ApplicationController
         when Line::Bot::Event::MessageType::Text
           #文字列が入力された場合の処理
           case event.message['text']
+          when '天気'
             message = {
               "type": "template",
               "altText": "位置検索中",
