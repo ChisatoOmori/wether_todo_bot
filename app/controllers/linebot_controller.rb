@@ -48,7 +48,7 @@ class LinebotController < ApplicationController
             text: push2
           }
           client.reply_message(event['replyToken'], message)
-        when Line::Bot::Event::MessageType::Text == /.天気./
+        when Line::Bot::Event::MessageType::Text == /"天気"/
 
           message = {
             "type": "template",
