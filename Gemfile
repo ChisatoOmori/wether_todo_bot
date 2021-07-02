@@ -71,3 +71,5 @@ gem 'line-bot-api'
 #access tokenなどを管理する用
 gem 'dotenv-rails'
 
+#google api用
+gem 'google-api-client'
