@@ -50,6 +50,7 @@ class LinebotController < ApplicationController
             text: push2
           }
           client.reply_message(event['replyToken'], message)
+
         when Line::Bot::Event::MessageType::Text
           #文字列が入力された場合の処理
           case event.message['text']
@@ -72,13 +73,18 @@ class LinebotController < ApplicationController
             }
           end
           client.reply_message(event['replyToken'], message)
+
         when Line::Bot::Event::Follow
           line_id = event['source']['userId']
           User.create(line_id: line_id)
+
         when Line::Bot::Event::Unfollow
           line_id = event['source']['userId']
           User.find_by(line_id: line_id).destroy
+
         end
+      message = { type: 'text', text: "デフォルトの返信メッセージ"}
+      client.reply_message(event['replyToken'], message)
       end
     }
     "OK"
