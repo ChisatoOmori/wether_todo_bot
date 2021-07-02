@@ -56,8 +56,12 @@ class LinebotController < ApplicationController
           case event.message['text']
           when 'スタート'
             # 「スタート」と入力されたときの処理
+            message = { type: 'text', text: "start"}
+            client.reply_message(event['replyToken'], message)
           when 'ストップ'
             # 「ストップ」と入力されたときの処理
+            message = { type: 'text', text: "stop"}
+            client.reply_message(event['replyToken'], message)
           when /.*天気.*/
             # 「天気」を含む文字列が入力されたときの処理
             message = {
