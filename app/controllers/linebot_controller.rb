@@ -52,7 +52,7 @@ class LinebotController < ApplicationController
           client.reply_message(event['replyToken'], message)
         when Line::Bot::Event::MessageType::Text
           #文字列が入力された場合の処理
-
+          case event.message['text']
             message = {
               "type": "template",
               "altText": "位置検索中",
@@ -69,7 +69,7 @@ class LinebotController < ApplicationController
                   ]
               }
             }
-          
+          end
           client.reply_message(event['replyToken'], message)
         end
         when Line::Bot::Event::Follow
