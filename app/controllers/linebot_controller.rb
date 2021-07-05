@@ -10,8 +10,10 @@ class LinebotController < ApplicationController
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Location  
+          #位置情報が入力された場合
           latitude = event.message['latitude'] #'35.374760'
           longitude = event.message['longitude'] #'132.741469'   
+          #経緯度を使った処理
           appId = "606b81c6d6c2c6da34af41ee78d06951"
           url= "http://api.openweathermap.org/data/2.5/forecast?lon=#{longitude}&lat=#{latitude}&APPID=#{appId}&units=metric&mode=xml"
          # XMLをパースしていく
@@ -48,33 +50,54 @@ class LinebotController < ApplicationController
             text: push2
           }
           client.reply_message(event['replyToken'], message)
-        when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video, Line::Bot::Event::MessageType::Text
 
-          message = {
-            "type": "template",
-            "altText": "位置検索中",
-            "template": {
-                "type": "buttons",
-                "title": "天気情報",
-                "text": "現在の位置を送信しますか？",
-                "actions": [
-                    {
-                      "type": "uri",
-                      "label": "位置を送る",
-                      "uri": "line://nv/location"
-                    }
-                ]
+        when Line::Bot::Event::MessageType::Text
+          #文字列が入力された場合の処理
+          case event.message['text']
+          when 'スタート'
+            # 「スタート」と入力されたときの処理
+            message = { type: 'text', text: "start"}
+            client.reply_message(event['replyToken'], message)
+          when 'ストップ'
+            # 「ストップ」と入力されたときの処理
+            message = { type: 'text', text: "stop"}
+            client.reply_message(event['replyToken'], message)
+          when /.*天気.*/
+            # 「天気」を含む文字列が入力されたときの処理
+            message = {
+              "type": "template",
+              "altText": "位置検索中",
+              "template": {
+                  "type": "buttons",
+                  "title": "天気情報",
+                  "text": "現在の位置を送信しますか？",
+                  "actions": [
+                      {
+                        "type": "uri",
+                        "label": "位置を送る",
+                        "uri": "line://nv/location"
+                      }
+                  ]
+              }
             }
-          }
+          end
           client.reply_message(event['replyToken'], message)
-        end
+
         when Line::Bot::Event::Follow
           line_id = event['source']['userId']
           User.create(line_id: line_id)
+          message = { type: 'text', text: "使い方:\n\n・位置情報を送信してください、位置情報が設定されます\nスタートを送ると朝8時に現在の天気が送られます\nストップを送るとストップします"}
+          client.reply_message(event['replyToken'], message)
+
         when Line::Bot::Event::Unfollow
           line_id = event['source']['userId']
           User.find_by(line_id: line_id).destroy
+
         end
+        #デフォルトのメッセージ
+      message = { type: 'text', text: "デフォルト:使い方:\n\n・位置情報を送信してください\nスタートを送ると朝8時に現在の天気が送られます\nストップを送るとストップします"}
+      client.reply_message(event['replyToken'], message)
+      end
     }
     "OK"
   end

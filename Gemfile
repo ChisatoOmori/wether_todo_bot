@@ -11,7 +11,7 @@ gem 'rails', '~> 6.1.3', '>= 6.1.3.2'
 gem 'sqlite3', group: :development
 
 # 本番環境(heroku)ではPostgreSQLを使用
-gem 'pg', group: :production
+gem 'pg',  group: :production
 # Use Puma as the app server
 gem 'puma', '~> 5.0'
 # Use SCSS for stylesheets
@@ -73,3 +73,5 @@ gem 'dotenv-rails'
 
 #google api用
 gem 'google-api-client'
+
+gem 'simple_calendar', '~> 2.0'
