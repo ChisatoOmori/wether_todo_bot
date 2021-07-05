@@ -4,6 +4,11 @@ class LinebotController < ApplicationController
   def callback
     body = request.body.read
     events = client.parse_events_from(body)
+    result = response['result']
+    content = result[0]['content']
+    op_type = content['opType']
+    from_arr = [content['from']] #midは配列にする
+    content_text = content['text']
 
     events.each { |event|
       case event
@@ -56,7 +61,7 @@ class LinebotController < ApplicationController
           case event.message['text']
           when 'スタート'
             # 「スタート」と入力されたときの処理
-            message = @blog.title
+            message = { type: 'text', text: "start"}
             client.reply_message(event['replyToken'], message)
           when 'ストップ'
             # 「ストップ」と入力されたときの処理
@@ -80,6 +85,9 @@ class LinebotController < ApplicationController
                   ]
               }
             }
+          when '明日の予定'
+            message = { type: 'text', text: "stop"}
+            client.reply_message(event['replyToken'], message)
           end
           client.reply_message(event['replyToken'], message)
 
