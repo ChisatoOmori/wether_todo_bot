@@ -56,7 +56,7 @@ class LinebotController < ApplicationController
           case event.message['text']
           when 'スタート'
             # 「スタート」と入力されたときの処理
-            message = { type: 'text', text: "start"}
+            message = @blog.title
             client.reply_message(event['replyToken'], message)
           when 'ストップ'
             # 「ストップ」と入力されたときの処理
