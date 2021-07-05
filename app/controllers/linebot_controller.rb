@@ -4,6 +4,7 @@ class LinebotController < ApplicationController
   def callback
     body = request.body.read
     events = client.parse_events_from(body)
+
     result = response['result']
     content = result[0]['content']
     op_type = content['opType']
@@ -86,7 +87,8 @@ class LinebotController < ApplicationController
               }
             }
           when '明日の予定'
-            message = { type: 'text', text: "stop"}
+            now = Time.current
+            message = { type: 'text', text: Blog.find(params[now.tomorrow])}
             client.reply_message(event['replyToken'], message)
           end
           client.reply_message(event['replyToken'], message)
