@@ -1,0 +1,21 @@
+<p id="notice"><%= notice %></p>
+<div class="show">
+<p>
+  <strong>タイトル</strong>
+  <%= @blog.title %>
+</p>
+
+<p>
+  <strong>内容</strong>
+  <%= @blog.content %>
+</p>
+
+<p>
+  <strong>日時</strong>
+  <%= @blog.start_time.strftime("%m-%d") %>
+</p>
+
+<%= link_to '編集', edit_blog_path(@blog) %>
+<%= link_to '消去',blog_path(@blog.id), method: :delete, data: { confirm: '本当に?' } %>
+<%= link_to '戻る', blogs_path %>
+</div>
