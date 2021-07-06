@@ -62,7 +62,7 @@ class LinebotController < ApplicationController
             # 「ストップ」と入力されたときの処理
             message = { type: 'text', text: "stop"}
             client.reply_message(event['replyToken'], message)
-          when /.*天気.*/
+          when '天気'
             # 「天気」を含む文字列が入力されたときの処理
             message = {
               "type": "template",
