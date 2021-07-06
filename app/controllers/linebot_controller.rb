@@ -65,17 +65,17 @@ class LinebotController < ApplicationController
           when /.*天気.*/
             # 「天気」を含む文字列が入力されたときの処理
             message = {
-              type: "template",
-              altText: "位置検索中",
-              template: {
-                  type: "buttons",
-                  title: "天気情報",
-                  text: "現在の位置を送信しますか？",
-                  actions: [
+              "type": "template",
+              "altText": "位置検索中",
+              "template": {
+                  "type": "buttons",
+                  "title": "天気情報",
+                  "text": "現在の位置を送信しますか？",
+                  "actions": [
                       {
-                        type: "uri",
-                        label: "位置を送る",
-                        url: "line://nv/location"
+                        "type": "uri",
+                        "label": "位置を送る",
+                        "url": "line://nv/location"
                       }
                   ]
               }
