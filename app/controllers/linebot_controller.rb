@@ -86,10 +86,7 @@ class LinebotController < ApplicationController
                   ]
               }
             }
-          when '明日の予定'
-            now = Time.current
-            message = { type: 'text', text: @blog.title}
-            client.reply_message(event['replyToken'], message)
+
           end
           client.reply_message(event['replyToken'], message)
 
