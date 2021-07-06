@@ -58,7 +58,41 @@ class LinebotController < ApplicationController
           case event.message['text']
           when 'スタート'
             # 「スタート」と入力されたときの処理
-            message = { type: 'text', text: "start"}
+            message = {
+              "type": "template",
+              "altText": "This is a buttons template",
+              "template": {
+                  "type": "buttons",
+                  "thumbnailImageUrl": "https://example.com/bot/images/image.jpg",
+                  "imageAspectRatio": "rectangle",
+                  "imageSize": "cover",
+                  "imageBackgroundColor": "#FFFFFF",
+                  "title": "Menu",
+                  "text": "Please select",
+                  "defaultAction": {
+                      "type": "uri",
+                      "label": "View detail",
+                      "uri": "http://example.com/page/123"
+                  },
+                  "actions": [
+                      {
+                        "type": "postback",
+                        "label": "Buy",
+                        "data": "action=buy&itemid=123"
+                      },
+                      {
+                        "type": "postback",
+                        "label": "Add to cart",
+                        "data": "action=add&itemid=123"
+                      },
+                      {
+                        "type": "uri",
+                        "label": "View detail",
+                        "uri": "http://example.com/page/123"
+                      }
+                  ]
+              }
+            }
             client.reply_message(event['replyToken'], message)
           when 'ストップ'
             # 「ストップ」と入力されたときの処理
