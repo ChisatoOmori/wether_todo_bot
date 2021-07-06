@@ -95,7 +95,10 @@ class LinebotController < ApplicationController
         when Line::Bot::Event::Unfollow
           line_id = event['source']['userId']
           User.find_by(line_id: line_id).destroy
-
+        when '明日の予定'
+          now = Time.current
+          message = { type: 'text', text: @blog.title}
+          client.reply_message(event['replyToken'], message)
         end
         #デフォルトのメッセージ
       message = { type: 'text', text: "デフォルト:使い方:\n\n・位置情報を送信してください\nスタートを送ると朝8時に現在の天気が送られます\nストップを送るとストップします"}
