@@ -65,7 +65,7 @@ class LinebotController < ApplicationController
           when '天気'
             # 「天気」を含む文字列が入力されたときの処理
             message = {
-              "type": "template",
+              "type": "text",
               "altText": "位置検索中",
               "template": {
                   "type": "buttons",
@@ -85,7 +85,7 @@ class LinebotController < ApplicationController
 
         when Line::Bot::Event::MessageType::Follow
           line_id = event['source']['userId']
-          User.create(line_id: line_id)
+          User.find_or_create_by(line_id: line_id)
           message = { type: 'text', text: "フォローありがとう！ 使い方:\n\n・位置情報を送信してください、位置情報が設定されます\nスタートを送ると朝8時に現在の天気が送られます\nストップを送るとストップします"}
           client.reply_message(event['replyToken'], message)
 
