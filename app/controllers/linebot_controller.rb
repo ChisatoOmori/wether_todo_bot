@@ -83,13 +83,13 @@ class LinebotController < ApplicationController
           end
           client.reply_message(event['replyToken'], message)
 
-        when Line::Bot::Event::Follow
+        when Line::Bot::Event::MessageType::Follow
           line_id = event['source']['userId']
           User.create(line_id: line_id)
           message = { type: 'text', text: "使い方:\n\n・位置情報を送信してください、位置情報が設定されます\nスタートを送ると朝8時に現在の天気が送られます\nストップを送るとストップします"}
           client.reply_message(event['replyToken'], message)
 
-        when Line::Bot::Event::Unfollow
+        when Line::Bot::Event::MessageType::Unfollow
           line_id = event['source']['userId']
           User.find_by(line_id: line_id).destroy
 
